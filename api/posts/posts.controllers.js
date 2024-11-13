@@ -1,12 +1,24 @@
 const Post = require("../../models/Post");
 const mongoose = require("mongoose");
 
-exports.postsCreate = async (req, res) => {
+// exports.postsCreate = async (req, res) => {
+//   try {
+//     const newPost = await Post.create(req.body);
+//     res.status(201).json(newPost);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+exports.postsCreate = async (req, res, next) => {
   try {
+    // Check if an image file was uploaded
+    if (req.file) {
+      req.body.image = `/media/${req.file.filename}`;
+    }
     const newPost = await Post.create(req.body);
     res.status(201).json(newPost);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 

@@ -1,4 +1,5 @@
 const express = require("express");
+const upload = require("../../middleware/multer");
 const router = express.Router();
 const {
   postsGet,
@@ -11,7 +12,7 @@ const slugMiddleware = require("./slugMiddleware");
 const validate = require("./validation");
 
 router.get("/", postsGet);
-router.post("/", validate, slugMiddleware, postsCreate);
+router.post("/", upload.single("image"), validate, slugMiddleware, postsCreate);
 router.delete("/:postId", postsDelete);
 router.put("/:postId", validate, slugMiddleware, postsUpdate);
 
